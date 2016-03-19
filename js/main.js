@@ -1,6 +1,6 @@
 "use strict";
 
-/* global document, window, Board, THREE */
+/* global document, window, Board, THREE, BoxElement */
 /* exported app */
 
 var app = {
@@ -12,10 +12,15 @@ var app = {
         var col1 = convertColor('#00bfff');
         var col2 = convertColor('#0080ff');
 
-        this.board = new Board(40, 40, 10, new THREE.Vector3(col1[0], col1[1], col1[2]), new THREE.Vector3(col2[0], col2[1], col2[2]));
+        this.board = new Board(40, 10, new THREE.Vector3(col1[0], col1[1], col1[2]), new THREE.Vector3(col2[0], col2[1], col2[2]));
+        this.boxElement = new BoxElement(4);
+        // this.boxElement.mesh.position.set(2, 2, 2);
+        var coords = this.board.getTileCoords(0, 0);
+        this.boxElement.mesh.position.set(coords[0], coords[1], 2);
         this.initScene();
 
         this.board.render(this.scene);
+        this.boxElement.render(this.scene);
 
         this.render.call(this);
         var that = this;

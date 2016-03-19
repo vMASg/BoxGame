@@ -3,16 +3,19 @@
 /* global THREE */
 /* exported Board */
 
-function Board (numTilesX, numTilesY, tileSize, color0, color1) {
+function Board (size, numTiles, color0, color1) {
     this.color0 = color0 || new THREE.Vector4(0, 0, 0, 1);
     this.color1 = color1 || new THREE.Vector4(1, 1, 1, 1);
 
+    this.size = size;
+    this.numTiles = numTiles;
+
     this.mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(numTilesX, numTilesY, tileSize, tileSize),
+        new THREE.PlaneGeometry(size, size, numTiles, numTiles),
         // new THREE.MeshLambertMaterial({color: 0xceceff, wireframe: false})
         new THREE.ShaderMaterial({
             uniforms: {
-                N: { type: 'f', value: tileSize },
+                N: { type: 'f', value: numTiles },
                 color0: { type: 'v4', value: this.color0 },
                 color1: { type: 'v4', value: this.color1 }
             },
@@ -71,5 +74,13 @@ function Board (numTilesX, numTilesY, tileSize, color0, color1) {
 
     this.updateColor1 = function (r, g, b) {
         this.color1.set(r, g, b);
+    };
+
+    this.getTileCoords = function (x, y) {
+        var tileSize = this.size / this.numTiles;
+        var displacement = (this.numTiles - 1)*0.5*tileSize;
+        var firstX = this.mesh.position.x - displacement;
+        var firstY = this.mesh.position.y - displacement;
+        return [firstX + x*tileSize, firstY + y*tileSize];
     };
 }
