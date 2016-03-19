@@ -34,8 +34,8 @@ var app = {
         // Adding some ambient lights
         this.scene.add( new THREE.AmbientLight(0x222222) );
 
-        this.dlight = new THREE.DirectionalLight( 0xffffff, 0.7 );
-        this.dlight.position.set( 20, -50, 50 );
+        this.dlight = new THREE.PointLight( 0xdddddd, 1, 50 );
+        this.dlight.position.set( 0, 20, 20 );
         this.scene.add( this.dlight );
     },
 
