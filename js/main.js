@@ -47,9 +47,24 @@ var app = {
         // Adding some ambient lights
         this.scene.add( new THREE.AmbientLight(0x222222) );
 
-        this.dlight = new THREE.PointLight( 0xdddddd, 1, 50 );
-        this.dlight.position.set( 0, 20, 20 );
-        this.scene.add( this.dlight );
+        this.plights = [
+            // new THREE.PointLight( 0xb30000, 1, 60 ),
+            // new THREE.PointLight( 0x0000b3, 1, 60 ),
+            // new THREE.PointLight( 0x00b300, 1, 60 ),
+            // new THREE.PointLight( 0xb3b300, 1, 60 )
+            new THREE.PointLight( 0xbcbcbc, 1, 60 ),
+            new THREE.PointLight( 0xbcbcbc, 1, 60 ),
+            new THREE.PointLight( 0xbcbcbc, 1, 60 ),
+            new THREE.PointLight( 0xbcbcbc, 1, 60 )
+        ];
+        this.plights[0].position.set( -20, 10, -20 );
+        this.plights[1].position.set( -20, 10, 20 );
+        this.plights[2].position.set( 20, 10, 20 );
+        this.plights[3].position.set( 20, 10, -20 );
+        for (var i = 0; i < this.plights.length; ++i) {
+            this.scene.add( this.plights[i] );
+            this.scene.add(new THREE.PointLightHelper(this.plights[i], 1));
+        }
     },
 
     resize: function (new_width, new_height) {
