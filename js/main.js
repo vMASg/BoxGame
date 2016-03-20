@@ -16,7 +16,7 @@ var app = {
         this.boxElement = new BoxElement(4);
         // this.boxElement.mesh.position.set(2, 2, 2);
         var coords = this.board.getTileCoords(0, 0);
-        this.boxElement.mesh.position.set(coords[0], coords[1], 2);
+        this.boxElement.mesh.position.set(coords[0], 2, coords[1]);
         this.initScene();
 
         this.board.render(this.scene);
@@ -39,7 +39,7 @@ var app = {
         this.clock = new THREE.Clock();
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(50.0, window.innerWidth / window.innerHeight, 10*Math.SQRT2, 80*Math.SQRT2);
-        this.camera.position.set( 0, -40*Math.SQRT2, 20 );
+        this.camera.position.set( 0, 20, -40*Math.SQRT2 );
         this.cameraControls = new THREE.OrbitAndPanControls( this.camera, this.renderer.domElement );
         this.cameraControls.target.set( 0, 0, 0 );
         this.camera.updateProjectionMatrix();

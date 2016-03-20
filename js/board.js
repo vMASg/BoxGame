@@ -63,6 +63,7 @@ function Board (size, numTiles, color0, color1) {
             ].join('\n')
         })
     );
+    this.mesh.rotateX(- Math.PI / 2);
 
     this.render = function (scene) {
         scene.add(this.mesh);
@@ -76,11 +77,11 @@ function Board (size, numTiles, color0, color1) {
         this.color1.set(r, g, b);
     };
 
-    this.getTileCoords = function (x, y) {
+    this.getTileCoords = function (x, z) {
         var tileSize = this.size / this.numTiles;
         var displacement = (this.numTiles - 1)*0.5*tileSize;
-        var firstX = this.mesh.position.x - displacement;
-        var firstY = this.mesh.position.y - displacement;
-        return [firstX + x*tileSize, firstY + y*tileSize];
+        var firstX = this.mesh.position.x + displacement;
+        var firstZ = this.mesh.position.z - displacement;
+        return [firstX - x*tileSize, firstZ + z*tileSize];
     };
 }
