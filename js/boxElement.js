@@ -48,11 +48,22 @@ function BoxElement (size) {
     this._planRoute = function (destination) {
         var destX = destination[0];
         var destY = destination[1];
-        var currX = this.currentPosition[0];
-        var currY = this.currentPosition[1];
+        var currX;
+        var currY;
         var route = [];
 
-        if (currX < destX) {        
+        // If route is interrupted it continues
+        // to next point and then takes new route
+        if (this.route.length > 0) {
+            route.push(this.route[0]);
+            currX = route[0][0];
+            currY = route[0][1];
+        } else {
+            currX = this.currentPosition[0];
+            currY = this.currentPosition[1];
+        }
+
+        if (currX < destX) {
             for (currX; currX < destX; ++currX)
                 route.push([currX + 1, currY]);
         } else if (currX > destX) {
@@ -68,7 +79,7 @@ function BoxElement (size) {
                 route.push([currX, currY - 1]);
         }
 
-        console.log(route);
+        // route.forEach(e => console.log(e[0], e[1]));
         return route;
     };
 
