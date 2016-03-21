@@ -31,6 +31,32 @@ var app = {
         window.addEventListener('resize', function () {
             that.resize(window.innerWidth, window.innerHeight);
         }, false);
+
+        var mouse = new THREE.Vector2();
+        var raycaster = new THREE.Raycaster();
+
+        document.addEventListener('mousemove', function (event) {
+            event.preventDefault();
+
+            mouse.x = ( event.clientX / that.renderer.domElement.clientWidth ) * 2 - 1;
+            mouse.y = - ( event.clientY / that.renderer.domElement.clientHeight ) * 2 + 1;
+
+            raycaster.setFromCamera( mouse, that.camera );
+            var intersects = raycaster.intersectObject( that.board.mesh );
+
+            if (intersects.length > 0) {
+                var p = that.board.getTileFromCoords(intersects[0].point.x, intersects[0].point.z);
+                that.board.updateSelectedTile(p[0], p[1]);
+            } else {
+                that.board.updateSelectedTile(-1, -1);
+            }
+        });
+
+        document.addEventListener('mousedown', function () {
+            if (that.board.selectedTile.x > -1) {
+                that.boxElement.moveTo(that.board.selectedTile.x, that.board.selectedTile.y);
+            }
+        });
     },
 
     initScene: function () {
