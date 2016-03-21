@@ -13,12 +13,16 @@ var app = {
         var col2 = convertColor('#0080ff');
 
         this.board = new Board(40, 10, new THREE.Vector3(col1[0], col1[1], col1[2]), new THREE.Vector3(col2[0], col2[1], col2[2]));
+        var board = this.board;
         this.boxElement = new BoxElement(4);
-        // this.boxElement.mesh.position.set(2, 2, 2);
-        var coords = this.board.getTileCoords(0, 0);
-        this.boxElement.mesh.position.set(coords[0], 2, coords[1]);
-        this.initScene();
+        this.boxElement.setPointCoordsFunction(function (point) {
+            return board.getTileCoords(point[0], point[1]);
+        });
 
+        this.boxElement.teleportTo(0, 0);
+        // this.boxElement.moveTo(3, 3);
+
+        this.initScene();
         this.board.render(this.scene);
         this.boxElement.render(this.scene);
 
@@ -77,6 +81,7 @@ var app = {
         window.requestAnimationFrame( this.render.bind(this) );
         var delta = this.clock.getDelta();
         this.cameraControls.update( delta );
+        this.boxElement.updatePosition( delta );
         this.renderer.render( this.scene, this.camera );
     }
 };
