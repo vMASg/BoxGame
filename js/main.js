@@ -74,6 +74,13 @@ var app = {
         this.cameraControls.target.set( 0, 0, 0 );
         this.camera.updateProjectionMatrix();
 
+        // Adding second camera to follow object
+        // this.thirdPersonCamera = new THREE.PerspectiveCamera(45.0, window.innerWidth / window.innerHeight, 0.1, 80*Math.SQRT2);
+        // this.thirdPersonCamera.updateProjectionMatrix();
+        // var cameraHelper = new THREE.CameraHelper(this.thirdPersonCamera);
+        // this.scene.add(this.thirdPersonCamera);
+        // this.scene.add(cameraHelper);
+
         // Adding some ambient lights
         this.scene.add( new THREE.AmbientLight(0x222222) );
 
@@ -108,6 +115,8 @@ var app = {
         var delta = this.clock.getDelta();
         this.cameraControls.update( delta );
         this.boxElement.updatePosition( delta );
+        // this.thirdPersonCamera.position.set(this.boxElement.mesh.position.x, this.boxElement.mesh.position.y + 19, this.boxElement.mesh.position.z + 19);
+        // this.thirdPersonCamera.lookAt(this.boxElement.mesh.position);
         this.renderer.render( this.scene, this.camera );
     }
 };
