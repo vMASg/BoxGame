@@ -64,6 +64,7 @@ var app = {
         this.renderer = new THREE.WebGLRenderer( { antialias: true } );
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.renderer.setClearColor( 0xAAAAAA );
+        this.renderer.autoClear = false;
         this.canvasContainer.appendChild( this.renderer.domElement );
         // Scene, camera, clock setup
         this.clock = new THREE.Clock();
@@ -75,11 +76,11 @@ var app = {
         this.camera.updateProjectionMatrix();
 
         // Adding second camera to follow object
-        // this.thirdPersonCamera = new THREE.PerspectiveCamera(45.0, window.innerWidth / window.innerHeight, 0.1, 80*Math.SQRT2);
-        // this.thirdPersonCamera.updateProjectionMatrix();
-        // var cameraHelper = new THREE.CameraHelper(this.thirdPersonCamera);
-        // this.scene.add(this.thirdPersonCamera);
-        // this.scene.add(cameraHelper);
+        this.thirdPersonCamera = new THREE.PerspectiveCamera(45.0, window.innerWidth / window.innerHeight, 0.1, 80*Math.SQRT2);
+        this.thirdPersonCamera.updateProjectionMatrix();
+        var cameraHelper = new THREE.CameraHelper(this.thirdPersonCamera);
+        this.scene.add(this.thirdPersonCamera);
+        this.scene.add(cameraHelper);
 
         // Adding some ambient lights
         this.scene.add( new THREE.AmbientLight(0x222222) );
@@ -113,10 +114,16 @@ var app = {
     render: function () {
         window.requestAnimationFrame( this.render.bind(this) );
         var delta = this.clock.getDelta();
+        this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+        this.renderer.clear();
         this.cameraControls.update( delta );
         this.boxElement.updatePosition( delta );
-        // this.thirdPersonCamera.position.set(this.boxElement.mesh.position.x, this.boxElement.mesh.position.y + 19, this.boxElement.mesh.position.z + 19);
-        // this.thirdPersonCamera.lookAt(this.boxElement.mesh.position);
+        this.thirdPersonCamera.position.set(this.boxElement.mesh.position.x, this.boxElement.mesh.position.y + 19, this.boxElement.mesh.position.z + 19);
+        this.thirdPersonCamera.lookAt(this.boxElement.mesh.position);
         this.renderer.render( this.scene, this.camera );
+        // this.renderer.setViewport(window.innerWidth - 200 - 20, 20, window.innerWidth - 20, 220);
+        var mapWidth = 400, mapHeight = 400 / this.thirdPersonCamera.aspect;
+        this.renderer.setViewport( 0, 0, mapWidth, mapHeight);
+        this.renderer.render( this.scene, this.thirdPersonCamera);
     }
 };
